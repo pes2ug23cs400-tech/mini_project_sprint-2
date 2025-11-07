@@ -1,0 +1,60 @@
+import logging
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
+from src.routers import analysis
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# ---------------- Upload Directory ----------------
+UPLOAD_DIR = Path("uploads")
+if not UPLOAD_DIR.exists():
+    UPLOAD_DIR.mkdir()
+    logger.info(f"Created missing uploads directory at: {UPLOAD_DIR.resolve()}")
+else:
+    logger.info(f"Uploads directory already exists: {UPLOAD_DIR.resolve()}")
+
+# ---------------- FastAPI App ----------------
+app = FastAPI(
+    title="Smart Image Processing API",
+    description="Analyze, enhance, and transform images with quality metrics",
+    version="2.0.0"
+)
+
+# ---------------- Middleware ----------------
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ---------------- Routers ----------------
+app.include_router(analysis.router)
+
+# ---------------- Endpoints ----------------
+@app.get("/")
+def root():
+    """Root endpoint to verify API is running."""
+    return {"status": "OK", "message": "Smart Image Processing API is live!"}
+
+@app.get("/health")
+def health_check():
+    """Health check endpoint for CI/CD monitoring."""
+    logger.info("Health check requested")
+    return {"status": "healthy"}
+
+
+app.include_router(analysis.router)
+#added the new routing
+
+# Create uploads directory
+UPLOAD_DIR = Path("uploads")
+UPLOAD_DIR.mkdir(exist_ok=True)
+
+if __name__ == "__main__":
+    import uvicorn
+    # NOTE: Port 8000 is the default used in the original project setup
+    uvicorn.run(app, host="0.0.0.0", port=8000)

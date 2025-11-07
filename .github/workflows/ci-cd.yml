@@ -39,6 +39,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
+      - name: Install Linting Tools
+        run: pip install pylint
+      
       # - name: Run flake8 (Style Check)
       #   # Assuming flake8 is configured to ignore E501/E301 via setup.cfg or flags
       #   run: flake8 . 
@@ -65,6 +68,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
+      - name: Install Security Tools
+        run: pip install bandit
+
       - name: Run Bandit Scan
         # Bandit targets the source code 'src/'
         # '--exit-code 1' ensures the pipeline fails on critical security errors

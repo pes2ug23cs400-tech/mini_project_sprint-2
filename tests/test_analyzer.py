@@ -36,7 +36,6 @@ class TestImageAnalyzer:
         # Detailed image should have higher blur score (sharper)
         assert detailed_blur > blurry_blur, "Detailed image should have higher blur score than blurry"
 
-    # E301: Expected 1 blank line, found 0 resolved here
     def test_brightness_calculation(self, sample_image):
         """Test brightness calculation"""
         brightness = ImageAnalyzer.calculate_brightness(sample_image)
@@ -52,65 +51,61 @@ class TestImageAnalyzer:
         """Dark image should have low brightness score"""
         brightness = ImageAnalyzer.calculate_brightness(dark_image)
         assert brightness < 50, "Dark image should have low brightness"
-
+    
     def test_contrast_calculation(self, sample_image):
         """Test contrast calculation"""
         contrast = ImageAnalyzer.calculate_contrast(sample_image)
         assert isinstance(contrast, float), "Contrast should be float"
         assert contrast >= 0, "Contrast should be non-negative"
 
-    # E301: Expected 1 blank line, found 0 resolved here
     def test_contrast_high_contrast_image(self, high_contrast_image):
         """High contrast image should have high contrast score"""
         contrast = ImageAnalyzer.calculate_contrast(high_contrast_image)
         assert contrast > 50, "High contrast image should have high score"
-        # W293: Blank line with whitespace removed
 
     def test_count_objects(self, sample_image):
         """Test object detection"""
         count = ImageAnalyzer.count_objects(sample_image)
         assert isinstance(count, int), "Object count should be int"
         assert count >= 0, "Object count should be non-negative"
-
+    
     def test_enhance_image(self, sample_image):
         """Test image enhancement"""
         enhanced = ImageAnalyzer.enhance_image(sample_image)
         assert enhanced.shape == sample_image.shape, "Shape should be preserved"
         assert enhanced.dtype == sample_image.dtype, "Data type should match"
-        # W293: Blank line with whitespace removed
 
     def test_quality_rating_excellent(self):
         """Test quality rating for excellent image"""
         rating = ImageAnalyzer.get_quality_rating(80, 80, 80)
         assert rating == "Excellent", "Rating should be Excellent"
-
+    
     def test_quality_rating_good(self):
         """Test quality rating for good image"""
         rating = ImageAnalyzer.get_quality_rating(60, 60, 60)
         assert rating == "Good", "Rating should be Good"
-        # W293: Blank line with whitespace removed
 
     def test_quality_rating_fair(self):
         """Test quality rating for fair image"""
         rating = ImageAnalyzer.get_quality_rating(40, 40, 40)
         assert rating == "Fair", "Rating should be Fair"
-
+    
     def test_quality_rating_poor(self):
         """Test quality rating for poor image"""
         rating = ImageAnalyzer.get_quality_rating(20, 20, 20)
         assert rating == "Poor", "Rating should be Poor"
-        # W293: Blank line with whitespace removed
 
     def test_read_image_valid(self, sample_image):
         """Test reading valid image"""
         _, buffer = cv2.imencode('.jpg', sample_image)
         img_bytes = buffer.tobytes()
+        
         result = ImageAnalyzer.read_image(img_bytes)
         assert result.shape == sample_image.shape, "Shape should match"
-        # W293: Blank line with whitespace removed
-
+    
     def test_read_image_invalid(self):
         """Test reading invalid image data"""
         invalid_bytes = b"invalid image data"
+        
         with pytest.raises(ValueError):
             ImageAnalyzer.read_image(invalid_bytes)
